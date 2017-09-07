@@ -1,0 +1,234 @@
+% !TEX TS-program = xelatex
+% !TEX encoding = UTF-8
+
+\newcommand{\name}{My Name}
+\newcommand{\cjkname}{我的名}
+\renewcommand{\date}{\today}
+% three lines of address
+\newcommand{\myaddressone}{1 Street Name}
+\newcommand{\myaddresstwo}{1234 ΑΒC, City}
+\newcommand{\myaddressthree}{Country}
+\newcommand{\phone}{+123~1234~xxxx}%~/~+43~688~181662}
+\newcommand{\email}{some@website.foo}
+\newcommand{\myhomepage}{website.foo}
+\newcommand{\githubname}{mazphilip}
+
+\newif\ifISO
+% \ISOtrue % or
+\ISOfalse
+
+\RequirePackage{hyperxmp} %add pdf input for hypersetup
+\documentclass[a4paper,10pt,oneside]{scrartcl}
+
+% Do not stop on errors during compilation.
+\nonstopmode 
+
+% I cannot remember where I got this from, I think it is a combination of a few stackoverflow answers
+\ifISO
+	\usepackage{atbegshi}
+	\AtBeginShipout{% %A hook that is executed for every page (after first one)
+	    \special{pdf: put @thispage
+	      <<
+	        /TrimBox [0 0 8.268 11.693] %A4 in inches		
+	      >>
+	    }
+	}
+	% First page
+	\special{pdf: put @thispage
+	  <<
+	     /TrimBox [0 0 8.268 11.693] %A4 in inches
+	  >>
+	}
+	 % \providecommand{\pdfxopts}{x-3}
+	\special{pdf:docinfo
+	  <<
+	    /GTS_PDFXVersion (PDF/X-3:2003)
+	    /GTS_PDFXConformance (PDF/X-3:2003)
+	  >>
+	}
+	\special{pdf:put @catalog
+	<<
+	  /PageMode /UseNone
+	  /OutputIntents [
+	    <<
+	      /Info (none)
+	      /Type /OutputIntent
+	      /S /GTS_PDFX
+	      /OutputConditionIdentifier (Custom)
+	      /RegistryName (http://www.color.org/)
+	    >>
+	  ]
+	>>
+	}
+\fi
+
+\usepackage{datetime} % for \pdfdate command for pdfmodate below
+\ifISO
+	\usepackage[hypertexnames=false,hyperfootnotes=false,bookmarks=false]{hyperref}
+	\AtBeginDocument{\NoHyper}
+	\AtEndDocument{\endNoHyper}
+\else 
+	\usepackage[hypertexnames=false,hyperfootnotes=false,bookmarks=true]{hyperref}
+\fi
+
+
+\AtEndPreamble{
+	\hypersetup{
+	   colorlinks=true, linktocpage=true, pdfstartpage=1,
+	   pdfstartview=FitV, breaklinks=true, pdfpagemode=UseNone,
+	   pageanchor=true, pdfpagemode=UseOutlines,
+	   plainpages=false, bookmarksnumbered,
+	   bookmarksopen=true, bookmarksopenlevel=1,
+	   hypertexnames=true, pdfhighlight=/O,
+	   urlcolor=blue, linkcolor=blue,
+	   citecolor=blue,
+	   hyperfootnotes=false, pdfpagelabels,
+	   pdftitle={Curriculum Vitae},% PDF/X document 
+	   pdfauthor={\name},
+	   pdfauthortitle={},
+	   % pdfdate={D:\pdfdate},
+	   pdfmoddate = {D:\pdfdate},
+	   pdfcopyright={Copyright (C) 2017, \name},
+	   pdfsubject={},
+	   pdfkeywords={},
+	   pdflicenseurl={},
+	   pdfcaptionwriter={},
+	   pdfcontactaddress={},
+	   pdfcontactcity={},
+	   pdfcontactpostcode={},
+	   pdfcontactcountry={},
+	   pdfcontactphone={},
+	   pdfcontactemail={\email},
+	   pdfcontacturl={},
+	   pdflang={en},  
+	   pdfinfo={% Setting some more PDF/X stuff for xelatex
+	   	Trapped={False} % PDF/X document should have Trapped tag set
+	   }
+	}
+}
+
+%%%% FONT
+\usepackage{xltxtra}
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures={Common}}
+
+\setmainfont[Numbers=Lining]{Linux Libertine O}
+\setsansfont[Scale=MatchUppercase]{Linux Biolinum O}
+\setmonofont[Scale=MatchLowercase]{Monaco}
+
+%%%% For Chinese, Japanese, and Korean names
+\usepackage{etoolbox}
+\ifdefempty{\cjkname}{}{
+	\usepackage{xeCJK}
+	\setCJKmainfont[Scale=MatchUppercase]{Lantinghei SC Extralight}
+	\newcommand{\printcjkname}{(\cjkname)}
+}
+
+\usepackage{polyglossia} %luatex for babel
+\setdefaultlanguage{english}
+
+%%%% set geometry and marginnotes for the years
+\usepackage[pass]{geometry}
+\newgeometry{includeheadfoot,tmargin=0.6in,bmargin=0.6in,lmargin=1.2in,rmargin=1in, marginparsep=7pt, marginparwidth=.6in}
+\setlength\parindent{0in}
+
+% taken from Dario Taraborelli's http://nitens.org/taraborelli/cvtex
+\usepackage{marginnote}
+\newcommand{\years}[1]{\marginnote{\scriptsize #1}}
+\newcommand{\yearp}[1]{\marginnote{\scriptsize \phantom{2000-}#1}}
+\renewcommand*{\raggedleftmarginnote}{}
+\setlength{\marginparsep}{7pt}
+\reversemarginpar
+
+% sets section
+\addtokomafont{section}{\normalfont\large\scshape}
+\addtokomafont{subsection}{\normalfont\normalsize\textsf}
+
+% Section and subsection formatting
+\renewcommand*{\sectionformat}{}
+\renewcommand*{\subsectionformat}{}
+
+% disable hyphenation, more granular but sufficient for a CV
+\usepackage[none]{hyphenat} %similar to ragged-right
+
+%Foot with update date on first page
+\usepackage[autooneside=true]{scrlayer-scrpage} 
+% \pagestyle{scrheadings} 
+\clearscrheadfoot
+\newpairofpagestyles[scrheadings]{firstpage}{\ofoot*{Updated~on~{\today}}}
+\pagestyle{scrheadings}% Entire document page style -- First page manually set
+
+% Define custom C++ sign because why not
+\newcommand{\Cpp}{C\kern-.10em\raise.25ex\hbox{\small{+\kern-.05em+}}}
+
+% help functions
+\newcommand{\github}[1]{\href{https://github.com/#1}{github.com/#1}}%{github: \texttt{#1}}}
+\newcommand{\printemail}[1]{\href{mailto:#1}{\texttt{#1}}}
+\newcommand{\printhomepage}[1]{\href{http://#1}{#1}}
+
+\begin{document}
+	
+\thispagestyle{firstpage}
+
+{\Large\name~\printcjkname}\\[0.4em]
+\myaddressone\\
+\myaddresstwo\\
+\myaddressthree\\
+phone:~\phone\\
+email:~\printemail{\email}\\
+github:~\github{\githubname}\\
+website:~\printhomepage{\myhomepage}
+\\[1em]
+
+\section{Academic interests}
+What Andrew Gelman did one year ago -- Edward Tufte's books
+
+\section{Positions}
+\years{2016-} Some Quant Hedge Fund\\
+\years{2014-2015} Associate Professor, \emph{Some University}\\
+\years{2012-2014} Post-doc, \emph{Some Other University}
+
+\section{Education}
+\yearp{2012} \textsc{PhD} in Something Over-Hyped, \emph{Good University}\\
+\yearp{2007} \textsc{BSc} in Something Quantitative, \emph{Better University}\\
+% \yearp{2014} \textsc{BSc} in Economics (distinction), \emph{Tilburg University}\\
+\yearp{2005} Exchange student, \emph{Beach and Sun University}
+
+\section{Awards}
+\yearp{2014} Excellence in Teaching award by the ABC Society\\
+\yearp{2005} Best Undergraduate Thesis award
+
+
+\section{Publications}
+\subsection{Conference \& Journal Articles}
+\yearp{2015} co-Author1, My Name , co-Author2 (2015) \textbf{Ergodicity and life: Probabilistic anthropology}, Mediocre Journal, Vol 32, Issue 1, p.\ 853-867\\
+\yearp{2013} My Name  \& co-Author1 (2013) \textbf{Error upper bounds in models of computational literature}, Proceedings of Good Conference, pp.\ 650-655\\
+My Name  (2013) \textbf{Posterior convergence under Gaussian process priors for any kernel}, Top Journal, Vol.\ 86, No.\ 2, pp.\ 1-16\\
+\yearp{2012} My Name  \& PhD-Supervisor (2012) \textbf{The only good dissertation chapter}, Good Journal, Vol.\ 2, No.\ 6, pp.\ 120-145
+
+\subsection{Working Papers}
+
+\yearp{2014} My Name (2014) \textbf{Counterintuitive Results in PAC Learning}, Some pre-print website: \href{http://localhost/}{preprint-code}
+
+\subsection{Books and Chapters}
+\yearp{2016} My Name (2016) \textbf{Why I quit academia}, Some Publisher \& Sons, Some City
+
+
+\subsection{Newspaper Articles}
+\yearp{2017} My Name (January 3, 2016) \textbf{5 surprising facts about statistics you won't believe}, Some Dodgy Online Newspaper \\
+\yearp{2016} My Name (June 1, 2016) \textbf{Please buy my book}, Some Newspaper  
+
+\section{Services to the profession}
+\years{2013-2016} Editor for \emph{Some Journal}\\
+\years{2014} Board of \emph{Some Conference}
+
+
+\section{Other skills}
+\subsection{Languages}
+Language 1, Language 2, "Language 3"
+\subsection{Technical Skills}
+\Cpp, \LaTeX\ and Some Programming Language (incl.\ Deep Learning)
+
+
+
+\end{document}
