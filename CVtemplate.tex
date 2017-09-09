@@ -118,7 +118,9 @@
 
 %%%% For Chinese, Japanese, and Korean names
 \usepackage{etoolbox}
-\ifdefempty{\cjkname}{}{
+\ifdefempty{\cjkname}{
+	\newcommand{\printcjkname}{}
+}{
 	\usepackage{xeCJK}
 	\setCJKmainfont[Scale=MatchUppercase]{Lantinghei SC Extralight}
 	\newcommand{\printcjkname}{(\cjkname)}
