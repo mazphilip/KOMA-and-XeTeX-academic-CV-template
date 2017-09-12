@@ -14,8 +14,8 @@
 \newcommand{\githubname}{mazphilip}
 
 \newif\ifISO
-% \ISOtrue % or
-\ISOfalse
+\ISOtrue % or
+% \ISOfalse
 
 \RequirePackage{hyperxmp} %add pdf input for hypersetup
 \documentclass[a4paper,10pt,oneside]{scrartcl}
@@ -131,13 +131,16 @@
 
 %%%% set geometry and marginnotes for the years
 \usepackage[pass]{geometry}
-\newgeometry{includeheadfoot,tmargin=0.6in,bmargin=0.6in,lmargin=1.2in,rmargin=1in, marginparsep=7pt, marginparwidth=.6in}
+\newgeometry{includefoot,tmargin=1in,bmargin=0.6in,lmargin=1.2in,rmargin=1in, marginparsep=7pt, marginparwidth=.6in}
 \setlength\parindent{0in}
 
 % taken from Dario Taraborelli's http://nitens.org/taraborelli/cvtex
 \usepackage{marginnote}
 \newcommand{\years}[1]{\marginnote{\scriptsize #1}}
 \newcommand{\yearp}[1]{\marginnote{\scriptsize \phantom{2000-}#1}}
+\usepackage{calc}
+\newcommand{\yearn}[1]{\marginnote{\scriptsize #1-\makebox[\widthof{now}][l]{now}}}
+
 \renewcommand*{\raggedleftmarginnote}{}
 \setlength{\marginparsep}{7pt}
 \reversemarginpar
@@ -183,10 +186,10 @@ website:~\printhomepage{\myhomepage}
 \\[1em]
 
 \section{Academic interests}
-What Andrew Gelman did one year ago -- Edward Tufte's books
+Works by Donald Knuth, Edward Tufte, Leland Wilkinson, \href{https://www.tcs.uni-luebeck.de/en/mitarbeiter/tantau/forschung/software/}{Till Tantau}, \href{http://www.pragma-ade.com/pdftex/thesis.pdf}{Hàn Thế Thành}, and Robert Slimbach
 
 \section{Positions}
-\years{2016-} Some Quant Hedge Fund\\
+\yearn{2016} Some Quant Hedge Fund\\
 \years{2014-2015} Associate Professor, \emph{Some University}\\
 \years{2012-2014} Post-doc, \emph{Some Other University}
 
@@ -221,8 +224,9 @@ My Name  (2013) \textbf{Posterior convergence under Gaussian process priors for 
 \yearp{2016} My Name (June 1, 2016) \textbf{Please buy my book}, Some Newspaper  
 
 \section{Services to the profession}
-\years{2013-2016} Editor for \emph{Some Journal}\\
-\years{2014} Board of \emph{Some Conference}
+\yearn{2013} Editor for \emph{Some Journal}\\
+\years{2014-2015} Board of \emph{Some Conference}\\
+\yearp{2010} Brought Donuts to Seminar, twice\\
 
 
 \section{Other skills}
